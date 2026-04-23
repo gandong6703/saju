@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>아센디아 SAJU</title>
+
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Noto+Serif+KR:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error-container": "#fe8983",
+                        "surface-container-high": "#f0eee5",
+                        "secondary-fixed": "#ffdad6",
+                        "primary-dim": "#535252",
+                        "on-tertiary-fixed": "#494a4a",
+                        "surface-dim": "#e4e3d7",
+                        "tertiary-fixed": "#f4f3f3",
+                        "inverse-on-surface": "#9e9d98",
+                        "surface-variant": "#eae9de",
+                        "on-secondary-fixed": "#85000d",
+                        "error": "#a64542",
+                        "background": "#fffcf7",
+                        "on-primary-fixed-variant": "#5c5b5b",
+                        "tertiary-fixed-dim": "#e6e5e5",
+                        "on-secondary-container": "#a70515",
+                        "inverse-primary": "#ffffff",
+                        "tertiary-dim": "#585858",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface-variant": "#64655d",
+                        "on-primary-fixed": "#403f3f",
+                        "outline-variant": "#babab0",
+                        "on-background": "#373831",
+                        "surface-tint": "#5f5e5e",
+                        "on-surface": "#373831",
+                        "secondary-fixed-dim": "#ffc7c1",
+                        "surface-container": "#f6f4ec",
+                        "secondary-container": "#ffdad6",
+                        "secondary": "#c22225",
+                        "on-error-container": "#752121",
+                        "surface-container-low": "#fcf9f3",
+                        "secondary-dim": "#b1111b",
+                        "on-tertiary-container": "#5b5c5c",
+                        "surface-container-highest": "#eae9de",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#d6d4d3",
+                        "primary-fixed": "#e5e2e1",
+                        "surface": "#fffcf7",
+                        "on-tertiary-fixed-variant": "#666666",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#646464",
+                        "outline": "#818178",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#0e0e0c",
+                        "error-dim": "#4e0309",
+                        "on-secondary-fixed-variant": "#b5161e",
+                        "tertiary-container": "#f4f3f3",
+                        "surface-bright": "#fffcf7",
+                        "primary": "#5f5e5e",
+                        "on-primary": "#faf7f6",
+                        "primary-container": "#e5e2e1",
+                        "on-primary-container": "#525151"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                        lg: "0.25rem",
+                        xl: "0.5rem",
+                        full: "0.75rem"
+                    },
+                    fontFamily: {
+                        headline: ["Noto Serif KR", "serif"],
+                        body: ["Manrope", "sans-serif"],
+                        label: ["Manrope", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .noto-serif { font-family: 'Noto Serif KR', serif; }
+        .manrope { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-background font-body min-h-screen flex flex-col relative selection:bg-secondary-container selection:text-on-secondary-container">
+    
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-gradient-to-b from-surface/80 via-surface/40 to-surface z-10 pointer-events-none"></div>
+        <img class="w-full h-full object-cover object-center opacity-60" data-alt="traditional korean ink wash sumukhwa painting of a lone scholar hiking a misty mountain path with a rabbit following him delicately painted plum blossoms softly glowing ethereal light minimal organic composition" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQYdFi2ovIkp5gSYh1bNLSDT6caHT0-HHb2SotwIDtzSn_kMy3kzAI-HPfdK40FrluLqUcBbwqVdk1liokYhSf_G6kUn6qbORI4VCstULau0URsQmL2JX8HF8fNpjGpfKEj8i24OngNjuM50uwiZoBXY_-BFL4yyRBdZ2KIrV929VzHvk_he_fTFmEsmjHiI7GnXH58qkFaWMHn-zrrjyRi_4o74L_qBxxuyy6tCvTBKf-rb9YLBxJ-ul4R36RCKLPQO-bPsYSJhsd">
+    </div>
+
+    <nav class="relative z-50 w-full top-0 sticky bg-[#fcf9f3] dark:bg-stone-900 border-none shadow-none font-noto-serif text-base tracking-wide">
+        <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+            <div class="text-2xl font-bold text-[#373831] dark:text-stone-200 tracking-tighter noto-serif">
+                아센디아 SAJU
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-[#5f5e5e] dark:text-stone-400 hover:text-[#373831] hover:bg-[#eae9de]/50 dark:hover:bg-stone-800 transition-colors duration-300 px-3 py-1 rounded-DEFAULT" href="#">궁합</a>
+                <a class="text-[#5f5e5e] dark:text-stone-400 hover:text-[#373831] hover:bg-[#eae9de]/50 dark:hover:bg-stone-800 transition-colors duration-300 px-3 py-1 rounded-DEFAULT" href="#">운세</a>
+                <a class="text-[#c22225] dark:text-red-500 font-bold border-b-2 border-[#c22225] pb-1 px-3 opacity-80 transition-opacity" href="#">사주</a>
+                <a class="text-[#5f5e5e] dark:text-stone-400 hover:text-[#373831] hover:bg-[#eae9de]/50 dark:hover:bg-stone-800 transition-colors duration-300 px-3 py-1 rounded-DEFAULT" href="#">FAQ</a>
+            </div>
+            <div class="flex items-center">
+                <button class="text-[#5f5e5e] dark:text-stone-400 hover:text-[#373831] hover:bg-[#eae9de]/50 dark:hover:bg-stone-800 transition-colors duration-300 p-2 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">account_circle</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10 flex-1 flex flex-col items-center justify-center w-full px-4 py-16 sm:py-24">
+        
+        <div class="text-center mb-12 sm:mb-16">
+            <h1 class="font-headline text-5xl sm:text-6xl md:text-7xl font-bold text-on-background tracking-tight drop-shadow-sm mb-4">
+                아센디아 SAJU
+            </h1>
+            <p class="font-body text-primary text-lg sm:text-xl tracking-wide font-light">AI로 보는 상세한 개인 맞춤 사주</p>
+        </div>
+
+        <div class="w-full max-w-lg bg-surface-container-lowest/80 backdrop-blur-md rounded-xl p-8 sm:p-12 shadow-[0_20px_40px_rgba(55,56,49,0.06)] border border-outline-variant/20 relative overflow-hidden">
+            
+            <div class="absolute -bottom-10 -right-10 w-48 h-48 bg-surface-variant rounded-full mix-blend-multiply filter blur-3xl opacity-50 pointer-events-none"></div>
+            
+            <div class="text-center mb-10">
+                <h2 class="font-headline text-2xl sm:text-3xl font-bold text-on-background mb-2">정보 입력</h2>
+                <p class="font-body text-sm text-primary">정확한 사주 분석을 위해 정보를 입력해 주세요.</p>
+            </div>
+
+            <form class="flex flex-col gap-8 relative z-10" id="saju-form" action="/result.html" method="get">
+                
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <div class="flex-1 flex flex-col gap-3">
+                        <label class="font-label text-sm font-medium text-on-surface-variant tracking-wide">이름 (한글)</label>
+                        <input class="w-full bg-surface-container-low border-0 border-b border-outline-variant/30 focus:border-on-background focus:ring-0 text-on-background font-body py-4 px-4 rounded-t-DEFAULT transition-colors focus:bg-surface-container hover:bg-surface-container" id="name-kor" name="name" type="text">
+                    </div>
+                    <div class="flex-1 flex flex-col gap-3">
+                        <label class="font-label text-sm font-medium text-on-surface-variant tracking-wide">
+                            이름 (한자) <span class="text-outline text-xs font-normal ml-1">(선택, 성명풀이용)</span>
+                        </label>
+                        <input class="w-full bg-surface-container-low border-0 border-b border-outline-variant/30 focus:border-on-background focus:ring-0 text-on-background font-body py-4 px-4 rounded-t-DEFAULT transition-colors focus:bg-surface-container hover:bg-surface-container" id="name-hanja" name="hanjaName" type="text">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <label class="font-label text-sm font-medium text-on-surface-variant tracking-wide">성별</label>
+                    <div class="flex gap-4">
+                        <label class="flex-1 cursor-pointer group">
+                            <input checked="" class="peer sr-only" name="gender" type="radio" value="male">
+                            <div class="w-full text-center py-4 rounded-lg bg-surface-container-low text-primary peer-checked:bg-surface-container-highest peer-checked:text-on-background peer-checked:font-bold transition-all duration-300 font-body border-b border-outline-variant/20 peer-checked:border-on-background/30 hover:bg-surface-container flex flex-col items-center gap-1">
+                                <span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 transition-opacity">male</span>
+                                <span>남성</span>
+                            </div>
+                        </label>
+                        <label class="flex-1 cursor-pointer group">
+                            <input class="peer sr-only" name="gender" type="radio" value="female">
+                            <div class="w-full text-center py-4 rounded-lg bg-surface-container-low text-primary peer-checked:bg-surface-container-highest peer-checked:text-on-background peer-checked:font-bold transition-all duration-300 font-body border-b border-outline-variant/20 peer-checked:border-on-background/30 hover:bg-surface-container flex flex-col items-center gap-1">
+                                <span class="material-symbols-outlined text-xl opacity-70 group-hover:opacity-100 transition-opacity">female</span>
+                                <span>여성</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <div class="flex justify-between items-end">
+                        <label class="font-label text-sm font-medium text-on-surface-variant tracking-wide">생년월일</label>
+                        <div class="flex gap-3">
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input checked="" class="text-secondary focus:ring-secondary/50 bg-surface border-outline-variant/50 w-3 h-3" name="calendar_type" type="radio" value="solar">
+                                <span class="font-body text-xs text-primary">양력</span>
+                            </label>
+                            <label class="flex items-center gap-1.5 cursor-pointer">
+                                <input class="text-secondary focus:ring-secondary/50 bg-surface border-outline-variant/50 w-3 h-3" name="calendar_type" type="radio" value="lunar">
+                                <span class="font-body text-xs text-primary">음력</span>
+                            </label>
+                        </div>
+                    </div>
+                    <input class="w-full bg-surface-container-low border-0 border-b border-outline-variant/30 focus:border-on-background focus:ring-0 text-on-background font-body py-4 px-4 rounded-t-DEFAULT transition-colors focus:bg-surface-container hover:bg-surface-container" id="birth-date" name="birthDate" type="date" value="1990-01-01" required>
+                </div>
+
+                <div class="flex flex-col gap-3 relative">
+                    <label class="font-label text-sm font-medium text-on-surface-variant tracking-wide flex items-center justify-between">
+                        태어난 시각 <span class="text-outline text-xs font-normal ml-1">(선택)</span>
+                        <button class="ml-auto text-secondary/70 hover:text-secondary text-xs font-medium flex items-center gap-1 transition-colors border-b border-transparent hover:border-secondary/30" type="button">
+                            <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 0, 'wght' 300;">help_outline</span>
+                            <span>생시 추정</span>
+                        </button>
+                    </label>
+                    <div class="relative">
+                        <select class="w-full bg-none bg-surface-container-low border-0 border-b border-outline-variant/30 focus:border-on-background focus:ring-0 text-on-background font-body py-4 pl-4 pr-10 rounded-t-DEFAULT transition-colors focus:bg-surface-container hover:bg-surface-container appearance-none cursor-pointer" id="time-branch" name="timeBranch">
+                            <option value="unknown">시간 모름</option>
+                            <option value="ja">자시 (23:30 ~ 01:29)</option>
+                            <option value="chuk">축시 (01:30 ~ 03:29)</option>
+                            <option value="in">인시 (03:30 ~ 05:29)</option>
+                            <option value="myo">묘시 (05:30 ~ 07:29)</option>
+                            <option value="jin">진시 (07:30 ~ 09:29)</option>
+                            <option value="sa">사시 (09:30 ~ 11:29)</option>
+                            <option value="o">오시 (11:30 ~ 13:29)</option>
+                            <option value="mi">미시 (13:30 ~ 15:29)</option>
+                            <option value="sin">신시 (15:30 ~ 17:29)</option>
+                            <option value="yu">유시 (17:30 ~ 19:29)</option>
+                            <option value="sul">술시 (19:30 ~ 21:29)</option>
+                            <option value="hae">해시 (21:30 ~ 23:29)</option>
+                        </select>
+                        <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-primary pointer-events-none">expand_more</span>
+                    </div>
+                </div>
+
+                <button class="mt-4 w-full bg-secondary text-on-secondary py-4 sm:py-5 rounded-lg font-headline text-lg sm:text-xl font-bold tracking-widest hover:bg-secondary-dim transition-all duration-300 shadow-sm hover:shadow-md flex justify-center items-center gap-2 group" type="submit">
+                    전체 사주 보기
+                    <span class="material-symbols-outlined text-base font-light group-hover:translate-x-1 transition-transform">east</span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="relative z-10 bg-[#fcf9f3] dark:bg-stone-900 font-manrope text-xs uppercase tracking-widest py-12 mt-auto border-none flex flex-col items-center justify-center gap-6 w-full px-4 text-center">
+        <div class="flex gap-6 sm:gap-8 flex-wrap justify-center">
+            <a class="text-[#5f5e5e] dark:text-stone-500 hover:text-[#c22225] dark:hover:text-red-400 transition-colors" href="#">이용약관</a>
+            <a class="text-[#5f5e5e] dark:text-stone-500 hover:text-[#c22225] dark:hover:text-red-400 transition-colors" href="#">개인정보처리방침</a>
+            <a class="text-[#5f5e5e] dark:text-stone-500 hover:text-[#c22225] dark:hover:text-red-400 transition-colors" href="#">문의하기</a>
+        </div>
+        <p class="text-[#5f5e5e] dark:text-stone-500 font-light tracking-wide">
+            © 2024 아센디아 SAJU. All rights reserved.
+        </p>
+    </footer>
+    
+    <div id="react-root"></div>
+    <script type="module" src="/src/saju-main.js"></script>
+    <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,21 @@
+{
+  "name": "saju-react",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173 --open /main.html",
+    "start": "vite --host 127.0.0.1 --port 5173 --open /main.html",
+    "build": "vite build",
+    "preview": "vite preview --open /main.html"
+  },
+  "dependencies": {
+    "lunar-javascript": "^1.7.7",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^4.5.14"
+  }
+}

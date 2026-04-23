@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Eul-sa (乙巳) Day Pillar Analysis</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface": "#fffcf7",
+                        "on-background": "#373831",
+                        "surface-container-low": "#fcf9f3",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#eae9de",
+                        "surface-variant": "#eae9de",
+                        "on-surface-variant": "#64655d",
+                        "primary": "#5f5e5e",
+                        "secondary": "#c22225",
+                        "secondary-container": "#ffdad6",
+                        "on-secondary-container": "#a70515",
+                        "outline-variant": "#babab0",
+                    },
+                    fontFamily: {
+                        "headline": ["'Noto Serif KR'", "serif"],
+                        "body": ["'Pretendard'", "sans-serif"],
+                    }
+                },
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-background');
+            font-family: theme('fontFamily.body');
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .display-text {
+            font-family: theme('fontFamily.headline');
+        }
+        /* 모달 페이드 효과를 위한 클래스 */
+        .modal-enter { opacity: 0; pointer-events: none; }
+        .modal-enter-active { opacity: 1; pointer-events: auto; transition: opacity 0.3s ease-out; }
+        .legacy-tag {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 9999px;
+            border: 1px solid rgba(186, 186, 176, 0.5);
+            background: rgba(255, 255, 255, 0.72);
+            padding: 0.22rem 0.58rem;
+            font-size: 0.68rem;
+            line-height: 1.15;
+            letter-spacing: 0.01em;
+            color: rgba(100, 101, 93, 0.95);
+            font-family: theme('fontFamily.body');
+        }
+        .pillar-side-nav {
+            position: fixed;
+            top: 52%;
+            transform: translateY(-50%);
+            z-index: 45;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(186, 186, 176, 0.4);
+            background: rgba(255, 252, 247, 0.92);
+            color: #5f5e5e;
+            backdrop-filter: blur(6px);
+            transition: all 0.2s ease;
+        }
+        .pillar-side-nav:hover {
+            color: #373831;
+            border-color: rgba(194, 34, 37, 0.35);
+            background: rgba(255, 252, 247, 0.98);
+        }
+        .pillar-side-nav-left { left: 0.7rem; }
+        .pillar-side-nav-right { right: 0.7rem; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center pb-24 md:pb-0 selection:bg-secondary-container selection:text-on-secondary-container relative">
+
+    <header class="fixed top-0 w-full z-50 bg-[#fffcf7]/80 backdrop-blur-md border-b border-[#babab0]/20 transition-colors duration-300">
+        <div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto w-full">
+            <button onclick="window.location.href='/result.html'" class="text-[#5f5e5e] hover:bg-[#eae9de]/50 active:scale-95 transition-transform duration-150 ease-in-out p-2 rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined font-light">arrow_back</span>
+            </button>
+            <div class="display-text font-semibold tracking-widest text-[#373831] text-lg uppercase">
+                어센디아 SAJU
+            </div>
+            <div class="flex gap-2">
+                <button class="text-[#5f5e5e] hover:bg-[#eae9de]/50 active:scale-95 transition-transform duration-150 ease-in-out p-2 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined font-light">share</span>
+                </button>
+                <button class="text-[#5f5e5e] hover:bg-[#eae9de]/50 active:scale-95 transition-transform duration-150 ease-in-out p-2 rounded-full flex items-center justify-center">
+                    <span class="material-symbols-outlined font-light">bookmark</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <button id="detail-prev-nav" type="button" class="pillar-side-nav pillar-side-nav-left" aria-label="이전 기둥 보기">
+        <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        <span id="detail-prev-label" class="text-xs md:text-sm tracking-wide">시주</span>
+    </button>
+    <button id="detail-next-nav" type="button" class="pillar-side-nav pillar-side-nav-right" aria-label="다음 기둥 보기">
+        <span id="detail-next-label" class="text-xs md:text-sm tracking-wide">월주</span>
+        <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+    </button>
+
+    <main class="w-full max-w-4xl mx-auto px-6 pt-28 md:pt-28 pb-16 flex flex-col gap-8 md:gap-10 relative z-10">
+        
+        <section class="flex flex-col items-center text-center gap-5 md:gap-6">
+            <div class="bg-surface-container-highest/50 text-secondary px-4 md:px-5 py-2.5 md:py-3 rounded-2xl text-sm flex items-start gap-2 border border-secondary/10 shadow-sm max-w-3xl">
+                <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+                <span id="detail-pillar-type-badge" class="font-semibold tracking-wide md:tracking-widest text-left">일주 (DAY PILLAR): 자아와 본질</span>
+            </div>
+            <p id="detail-pillar-type-sub" class="font-body text-[12px] md:text-sm font-normal text-on-surface-variant -mt-4">나라는 사람의 성격과 삶을 대하는 핵심 태도</p>
+            
+            <h1 class="display-text text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.3] tracking-tight text-on-background">
+                <span id="detail-day-label">일주 을사(乙巳)</span> <br/>
+                <span id="detail-main-caption" class="text-xl md:text-2xl font-normal text-primary/90 mt-4 block">눈부신 태양 아래 피어난 화려한 꽃</span>
+            </h1>
+
+            <div id="detail-top-hashtags" class="flex flex-wrap gap-2.5 mt-1 md:mt-2 justify-center">
+                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#재기발랄</span>
+                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#뛰어난표현력</span>
+                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#매력과센스</span>
+                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#유연한처세</span>
+                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#창의적기획</span>
+            </div>
+        </section>
+
+        <section class="w-full mt-0">
+            <div class="bg-surface-container-low/50 rounded-[2rem] p-8 pt-14 md:p-12 md:pt-16 border border-outline-variant/20 shadow-sm flex flex-col md:flex-row items-center gap-10 md:gap-16 relative overflow-hidden">
+                <h2 id="detail-card-section-title" class="display-text absolute top-5 right-6 md:right-8 inline-flex items-center gap-1.5 rounded-full border border-secondary/20 bg-secondary-container/70 px-3.5 py-1.5 text-[11px] md:text-xs font-semibold text-on-secondary-container tracking-[0.12em] shadow-[0_6px_16px_rgba(194,34,37,0.12)] backdrop-blur-sm">
+                    <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">id_card</span>
+                    <span>나의 일주 카드</span>
+                </h2>
+                 
+                <div class="w-48 md:w-60 shrink-0 cursor-pointer group relative z-10" onclick="openCardModal()">
+                    <div class="w-full aspect-[1/2] rounded-2xl overflow-hidden shadow-md border border-outline-variant/30 relative bg-surface-container-lowest">
+                        <img id="detail-card-image" alt="을사일주 카드" src="/images/을사.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white text-4xl font-light">zoom_in</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-col items-center md:items-start text-center md:text-left z-10">
+                    <span class="material-symbols-outlined text-secondary/30 text-4xl md:text-5xl mb-4 rotate-180">format_quote</span>
+                    
+                    <h3 id="detail-card-highlight" class="display-text text-2xl md:text-3xl font-medium text-on-background leading-[1.6] break-keep">세상의 시선을 사로잡는 화려한 매력과 뛰어난 표현력</h3>
+                    
+                    <div class="w-12 h-[2px] bg-secondary/20 mt-8 mb-6"></div>
+                    
+                    <p id="detail-intro-text" class="font-body text-on-surface-variant font-light text-base md:text-lg leading-loose break-keep max-w-md">
+                        일주는 개인의 본질, 내면의 기질, 그리고 중년의 운기를 나타내는 가장 중요한 기둥입니다.
+                    </p>
+                </div>
+
+                <div class="absolute -right-12 -bottom-12 opacity-[0.03] pointer-events-none">
+                    <span class="material-symbols-outlined text-[300px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-surface-container-low rounded-[2rem] p-8 md:p-12 relative overflow-hidden group border border-outline-variant/20 shadow-[0_8px_30px_rgb(0,0,0,0.02)]">
+            <div class="absolute -right-8 -top-8 opacity-[0.03] transition-transform duration-1000 ease-out group-hover:scale-110 group-hover:rotate-12">
+                <span class="material-symbols-outlined text-[240px]" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+            </div>
+            <h2 class="display-text text-2xl font-semibold text-on-background mb-8 flex items-center gap-3 relative z-10">
+                <span class="text-secondary font-light text-3xl">I.</span> <span id="detail-section1-title">핵심 이미지</span>
+            </h2>
+            <ul id="detail-section1-items" class="space-y-6 font-body text-on-surface-variant relative z-10 text-lg font-light leading-relaxed">
+                <li class="flex items-start gap-4">
+                    <span class="material-symbols-outlined text-secondary mt-1 text-lg opacity-80" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+                    <span class="break-keep"><strong class="text-on-background font-medium">빛을 발산하는 생명력:</strong> 강렬한 태양 아래 활짝 핀 꽃처럼, 자신의 에너지를 밖으로 표출하고 발산하는 기운이 강합니다.</span>
+                </li>
+                <li class="flex items-start gap-4">
+                    <span class="material-symbols-outlined text-secondary mt-1 text-lg opacity-80" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span>
+                    <span class="break-keep"><strong class="text-on-background font-medium">탁월한 환경 적응력:</strong> 덩굴식물처럼 척박한 환경에서도 살길을 찾아 뻗어나가는 유연함과 끈질긴 생명력을 지녔습니다.</span>
+                </li>
+            </ul>
+            <div id="detail-section1-tags" class="relative z-10 mt-7 ml-8 md:ml-9 flex items-center gap-2">
+                <span class="legacy-tag">#목생화</span>
+            </div>
+        </section>
+
+        <section class="space-y-8">
+            <h2 class="display-text text-2xl font-semibold text-on-background px-4">
+                <span class="text-secondary font-light text-3xl mr-3">II.</span> <span id="detail-section2-title">성향 포인트</span>
+            </h2>
+            <div id="detail-section2-tags" class="px-4 -mt-4 flex flex-wrap gap-2">
+                <span class="legacy-tag">#상관</span>
+                <span class="legacy-tag">#목욕</span>
+            </div>
+            <div id="detail-section2-cards" class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div class="bg-surface-container-lowest rounded-[2rem] p-8 md:p-10 shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-outline-variant/10 flex flex-col h-full hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-surface-container-low text-secondary rounded-2xl flex items-center justify-center mb-6 border border-secondary/10">
+                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1; font-weight: 300;">auto_awesome</span>
+                    </div>
+                    <h3 class="display-text text-xl font-semibold text-on-background mb-3 tracking-wide">재기발랄한 표현력</h3>
+                    <div class="mb-4">
+                        <span class="legacy-tag">#상관</span>
+                    </div>
+                    <p class="font-body text-on-surface-variant leading-loose font-light text-base break-keep">
+                        틀에 얽매이지 않는 자유로운 발상과 뛰어난 언변, 예술적 감각을 의미합니다. 순간적인 대처 능력이 뛰어나며, 자신의 생각과 감정을 다채롭게 표현하는 데 탁월한 재능이 있습니다.
+                    </p>
+                </div>
+                
+                <div class="bg-surface-container-lowest rounded-[2rem] p-8 md:p-10 shadow-[0_10px_40px_rgb(0,0,0,0.03)] border border-outline-variant/10 flex flex-col h-full hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-14 h-14 bg-surface-container-low text-secondary rounded-2xl flex items-center justify-center mb-6 border border-secondary/10">
+                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1; font-weight: 300;">styler</span>
+                    </div>
+                    <h3 class="display-text text-xl font-semibold text-on-background mb-3 tracking-wide">시선을 끄는 스타성</h3>
+                    <div class="mb-4">
+                        <span class="legacy-tag">#목욕</span>
+                    </div>
+                    <p class="font-body text-on-surface-variant leading-loose font-light text-base break-keep">
+                        대중의 시선을 끄는 묘한 매력(도화)과 호기심이 많습니다. 꾸미고 드러내는 것을 좋아하며, 트렌드에 민감하여 어느 무리에서나 자연스럽게 중심에 서게 되는 기운입니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-surface-container-low/50 rounded-[2rem] p-8 md:p-12 relative overflow-hidden border border-outline-variant/20">
+            <h2 class="display-text text-2xl font-semibold text-on-background mb-8">
+                <span class="text-secondary font-light text-3xl mr-3">III.</span> <span id="detail-section3-title">중년기 운세 (40세 ~ 60세)</span>
+            </h2>
+            <div id="detail-section3-items" class="space-y-8 font-body text-on-surface-variant font-light text-lg">
+                <div class="border-l-[3px] border-secondary/40 pl-6 py-1">
+                    <strong class="display-text text-on-background font-medium block mb-2 text-xl tracking-wide">자유롭고 주도적인 활동</strong>
+                    <p class="leading-loose break-keep">이 시기에는 조직의 룰에 따르기보다는 자신의 창의성과 기획력을 발휘할 수 있는 독자적인 활동에서 두각을 나타냅니다. 새로운 프로젝트나 변화를 주도하는 역할을 맡기 쉽습니다.</p>
+                </div>
+                <div class="border-l-[3px] border-secondary/40 pl-6 py-1">
+                    <strong class="display-text text-on-background font-medium block mb-2 text-xl tracking-wide">관계의 유연함</strong>
+                    <p class="leading-loose break-keep">뜨거운 불기운으로 인해 즉흥적인 면이 나타날 수 있지만, 특유의 유연함과 사교성으로 대인관계를 매끄럽게 조율하며 다양한 인맥을 형성하는 시기이기도 합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-8 mb-12 py-12 relative w-full flex flex-col items-center">
+            <div class="w-[1px] h-16 bg-gradient-to-b from-transparent to-secondary/40 mb-10"></div>
+            
+            <h2 class="display-text text-lg md:text-xl font-medium text-secondary tracking-[0.2em] mb-10">
+                오래도록 빛나기 위하여
+            </h2>
+            
+            <p id="detail-advice-text" class="display-text text-[1.1rem] md:text-2xl leading-[2.2] md:leading-[2.2] text-center text-on-background max-w-2xl break-keep font-light">
+                "화려하게 피어난 꽃일수록 그 뿌리를 <br class="hidden md:block"/>깊고 촉촉하게 다듬어야 시들지 않는 법입니다. <br/><br class="hidden md:block"/>
+                밖으로 향하는 에너지를 잠시 거두고, <br class="hidden md:block"/>고요한 사색으로 내면의 온도를 다스려보세요. <br/><br class="hidden md:block"/>
+                <span class="text-secondary/80 font-medium">잠시의 멈춤이 당신의 매력을 더욱 짙게 빚어낼 것입니다."</span>
+            </p>
+            
+            <div class="w-[1px] h-16 bg-gradient-to-t from-transparent to-secondary/40 mt-12"></div>
+        </section>
+    </main>
+
+    <nav class="fixed bottom-0 w-full z-50 bg-[#fffcf7]/90 backdrop-blur-xl md:hidden flex justify-around items-center px-2 pb-safe pt-2 border-t border-outline-variant/20 shadow-[0_-10px_40px_rgb(0,0,0,0.03)]">
+        <a class="flex flex-col items-center justify-center py-2 px-6 text-secondary bg-surface-container-highest/50 rounded-2xl transition-all duration-300" href="#">
+            <span class="material-symbols-outlined mb-1 font-light text-[22px]">auto_stories</span>
+            <span class="font-body text-[10px] uppercase tracking-widest font-medium">Readings</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary py-2 px-6 hover:text-on-background transition-colors" href="#">
+            <span class="material-symbols-outlined mb-1 font-light text-[22px]">event_note</span>
+            <span class="font-body text-[10px] uppercase tracking-widest font-medium">Calendar</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary py-2 px-6 hover:text-on-background transition-colors" href="#">
+            <span class="material-symbols-outlined mb-1 font-light text-[22px]">storm</span>
+            <span class="font-body text-[10px] uppercase tracking-widest font-medium">Elemental</span>
+        </a>
+        <a class="flex flex-col items-center justify-center text-primary py-2 px-6 hover:text-on-background transition-colors" href="#">
+            <span class="material-symbols-outlined mb-1 font-light text-[22px]">person</span>
+            <span class="font-body text-[10px] uppercase tracking-widest font-medium">Profile</span>
+        </a>
+    </nav>
+
+    <div id="cardModal" class="modal-enter fixed inset-0 z-[100] flex items-center justify-center bg-[#1a1a1a]/80 backdrop-blur-md" onclick="closeCardModal()">
+        <button class="absolute top-6 right-6 md:top-10 md:right-10 text-white/70 hover:text-white transition-colors" onclick="closeCardModal()">
+            <span class="material-symbols-outlined text-4xl font-light">close</span>
+        </button>
+        <div class="relative max-w-[90vw] max-h-[90vh]" onclick="event.stopPropagation()">
+            <video id="detail-modal-video" class="hidden max-w-full max-h-[85vh] object-contain rounded-2xl shadow-[0_20px_60px_rgb(0,0,0,0.5)]" muted loop playsinline preload="metadata"></video>
+            <img id="detail-modal-image" src="/images/을사.png" alt="을사일주 카드 확대" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-[0_20px_60px_rgb(0,0,0,0.5)]" />
+        </div>
+    </div>
+
+    <script type="module" src="/src/day-pillar-detail.js"></script>
+    <script>
+        const modal = document.getElementById('cardModal');
+        const modalImage = document.getElementById('detail-modal-image');
+        const modalVideo = document.getElementById('detail-modal-video');
+        
+        function openCardModal() {
+            modal.classList.add('modal-enter-active');
+            document.body.style.overflow = 'hidden';
+
+            if (modalVideo && modalVideo.dataset.ready === 'true') {
+                modalImage.classList.add('hidden');
+                modalVideo.classList.remove('hidden');
+                const playPromise = modalVideo.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(function() {});
+                }
+            } else {
+                if (modalVideo) {
+                    modalVideo.classList.add('hidden');
+                    modalVideo.pause();
+                    modalVideo.currentTime = 0;
+                }
+                modalImage.classList.remove('hidden');
+            }
+        }
+
+        function closeCardModal() {
+            modal.classList.remove('modal-enter-active');
+            if (modalVideo) {
+                modalVideo.pause();
+                modalVideo.currentTime = 0;
+                modalVideo.classList.add('hidden');
+            }
+            modalImage.classList.remove('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                closeCardModal();
+            }
+        });
+    </script>
+</body>
+</html>
