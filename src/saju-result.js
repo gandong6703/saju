@@ -1,6 +1,9 @@
 ﻿const nameEl = document.getElementById("result-name");
 const subtitleEl = document.getElementById("result-subtitle");
 
+const seasonalSummaryTextEl = document.getElementById("result-seasonal-summary-text");
+const seasonalSummaryIconEl = document.getElementById("result-seasonal-summary-icon");
+
 const pillarEls = {
   hour: document.getElementById("hour-pillar"),
   day: document.getElementById("day-pillar"),
@@ -13,6 +16,47 @@ const PILLAR_META = {
   day: { type: "day", label: "일주" },
   month: { type: "month", label: "월주" },
   year: { type: "year", label: "년주" }
+};
+
+const DAY_STEM_TO_LABEL = {
+  갑: "자라난 나무",
+  을: "피어난 꽃",
+  병: "뜬 태양",
+  정: "밝힌 등불",
+  무: "솟아난 태산",
+  기: "일구어진 비옥한 땅",
+  경: "제련된 강철",
+  신: "빛나는 보석",
+  임: "찰랑이는 바다",
+  계: "맺힌 이슬"
+};
+
+const MONTH_BRANCH_TO_SEASON = {
+  자: "한겨울에",
+  축: "늦겨울에",
+  인: "초봄에",
+  묘: "봄에",
+  진: "늦봄에",
+  사: "초여름에",
+  오: "한여름에",
+  미: "늦여름에",
+  신: "초가을에",
+  유: "가을에",
+  술: "늦가을에",
+  해: "초겨울에"
+};
+
+const DAY_STEM_TO_ICON = {
+  갑: "park",
+  을: "local_florist",
+  병: "wb_sunny",
+  정: "lightbulb",
+  무: "terrain",
+  기: "grass",
+  경: "hardware",
+  신: "diamond",
+  임: "waves",
+  계: "water_drop"
 };
 
 const pillarCards = {
@@ -34,6 +78,51 @@ function getQueryParams() {
     calendarType: query.get("calendarType") ?? query.get("calendar_type") ?? "solar",
     timeBranch: query.get("timeBranch") ?? "unknown"
   };
+}
+
+function getDetailPassThroughParams() {
+  const query = new URLSearchParams(window.location.search);
+  return {
+    name: query.get("name") ?? "",
+    hanjaName: query.get("hanjaName") ?? "",
+    birthDate: query.get("birthDate") ?? "",
+    gender: query.get("gender") ?? "",
+    calendarType: query.get("calendarType") ?? query.get("calendar_type") ?? "",
+    timeBranch: query.get("timeBranch") ?? query.get("time_branch") ?? ""
+  };
+}
+
+function getStemAndBranch(pillarHangul) {
+  const chars = [...String(pillarHangul ?? "").trim()];
+  return {
+    stem: chars[0] ?? "",
+    branch: chars[1] ?? ""
+  };
+}
+
+function updateSeasonalSummary(pillars) {
+  const day = getStemAndBranch(pillars?.day?.hangul ?? "");
+  const month = getStemAndBranch(pillars?.month?.hangul ?? "");
+
+  const dayLabel = DAY_STEM_TO_LABEL[day.stem];
+  const seasonLabel = MONTH_BRANCH_TO_SEASON[month.branch];
+  const iconName = DAY_STEM_TO_ICON[day.stem] ?? "auto_awesome";
+
+  if (seasonalSummaryTextEl) {
+    seasonalSummaryTextEl.textContent =
+      dayLabel && seasonLabel ? `${seasonLabel} ${dayLabel}` : "사주의 흐름을 해석하는 중";
+  }
+
+  if (seasonalSummaryIconEl) {
+    seasonalSummaryIconEl.textContent = iconName;
+  }
+}
+
+function updateSeasonalSummaryFromCurrentPillars() {
+  updateSeasonalSummary({
+    day: { hangul: pillarEls.day?.textContent?.trim() ?? "" },
+    month: { hangul: pillarEls.month?.textContent?.trim() ?? "" }
+  });
 }
 
 function applyPillars(pillars) {
@@ -200,6 +289,7 @@ function bindPillarNavigation() {
 }
 
 function updatePillarNavigation() {
+  const passThroughParams = getDetailPassThroughParams();
   const pillarContext = {
     hour: pillarEls.hour?.textContent?.trim() ?? "",
     day: pillarEls.day?.textContent?.trim() ?? "",
@@ -224,6 +314,12 @@ function updatePillarNavigation() {
       query.set("pillar", pillar);
 
       Object.entries(pillarContext).forEach(([contextKey, contextValue]) => {
+        if (contextValue) {
+          query.set(contextKey, contextValue);
+        }
+      });
+
+      Object.entries(passThroughParams).forEach(([contextKey, contextValue]) => {
         if (contextValue) {
           query.set(contextKey, contextValue);
         }
@@ -259,6 +355,7 @@ async function loadResult() {
     if (subtitleEl) {
       subtitleEl.textContent = "생년월일 정보가 없어 결과를 계산할 수 없습니다.";
     }
+    updateSeasonalSummaryFromCurrentPillars();
     applyPillarImages();
     applyPillarVideos();
     updatePillarNavigation();
@@ -283,6 +380,7 @@ async function loadResult() {
 
     const result = data.result;
     applyPillars(result.pillars);
+    updateSeasonalSummary(result.pillars);
     applyElementCounts(result.elements);
     applyPillarImages();
     applyPillarVideos();
@@ -298,6 +396,7 @@ async function loadResult() {
           ? error.message
           : "결과를 불러오는 중 오류가 발생했습니다.";
     }
+    updateSeasonalSummaryFromCurrentPillars();
     applyPillarImages();
     applyPillarVideos();
     updatePillarNavigation();
@@ -305,4 +404,5 @@ async function loadResult() {
 }
 
 bindPillarNavigation();
+updateSeasonalSummaryFromCurrentPillars();
 loadResult();

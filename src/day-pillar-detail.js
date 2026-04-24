@@ -4,7 +4,6 @@ import rawMonthPillarText from "./월주풀이.txt?raw";
 import rawHourPillarText from "./시주풀이.txt?raw";
 
 const DEFAULT_TYPE = "day";
-const DEFAULT_PILLAR = "을사";
 const NOT_READY_MESSAGE = "해당 사주는 준비 중입니다";
 const SECTION2_ICONS = [
   "auto_awesome",
@@ -22,6 +21,7 @@ const PILLAR_TYPE_CONFIG = {
     badgeTitle: "일주 (DAY PILLAR): 자아와 본질",
     badgeSubtitle: "나라는 사람의 성격과 삶을 대하는 핵심 태도",
     cardTitle: "나의 일주 카드",
+    adviceHeading: "오래도록 빛나기 위하여",
     source: rawDayPillarText
   },
   month: {
@@ -30,6 +30,7 @@ const PILLAR_TYPE_CONFIG = {
     badgeTitle: "월주 (MONTH PILLAR): 사회와 환경",
     badgeSubtitle: "내가 발을 딛고 서 있는 직업과 사회적 무대",
     cardTitle: "나의 월주 카드",
+    adviceHeading: "거친 바람 속에서도 우아하게 춤추기 위하여",
     source: rawMonthPillarText
   },
   year: {
@@ -38,6 +39,7 @@ const PILLAR_TYPE_CONFIG = {
     badgeTitle: "년주 (YEAR PILLAR): 뿌리와 근본",
     badgeSubtitle: "나의 태생과 조상의 기운이 담긴 시작점",
     cardTitle: "나의 년주 카드",
+    adviceHeading: "깊고 단단하게 뿌리내리기 위하여",
     source: rawYearPillarText
   },
   hour: {
@@ -46,6 +48,7 @@ const PILLAR_TYPE_CONFIG = {
     badgeTitle: "시주 (HOUR PILLAR): 결실과 심연",
     badgeSubtitle: "인생의 최종적인 결과와 보이지 않는 내면의 잠재력",
     cardTitle: "나의 시주 카드",
+    adviceHeading: "당신이 다다를 아름다운 풍경을 위하여",
     source: rawHourPillarText
   }
 };
@@ -628,14 +631,32 @@ function parsePillarContext() {
   };
 }
 
-function buildDetailUrl(typeKey, pillar, context) {
+function parseResultQueryContext() {
+  const params = new URLSearchParams(window.location.search);
+  return {
+    name: normalizeText(params.get("name") ?? ""),
+    hanjaName: normalizeText(params.get("hanjaName") ?? ""),
+    birthDate: normalizeText(params.get("birthDate") ?? ""),
+    gender: normalizeText(params.get("gender") ?? ""),
+    calendarType: normalizeText(params.get("calendarType") ?? params.get("calendar_type") ?? ""),
+    timeBranch: normalizeText(params.get("timeBranch") ?? params.get("time_branch") ?? "")
+  };
+}
+
+function buildDetailUrl(typeKey, pillar, pillarContext, resultContext) {
   const params = new URLSearchParams();
   params.set("type", typeKey);
   if (pillar) {
     params.set("pillar", pillar);
   }
 
-  Object.entries(context).forEach(([key, value]) => {
+  Object.entries(pillarContext).forEach(([key, value]) => {
+    if (value) {
+      params.set(key, value);
+    }
+  });
+
+  Object.entries(resultContext).forEach(([key, value]) => {
     if (value) {
       params.set(key, value);
     }
@@ -644,7 +665,44 @@ function buildDetailUrl(typeKey, pillar, context) {
   return `/dayPillar.html?${params.toString()}`;
 }
 
-function setupSideNavigation(currentType, context, currentPillar) {
+function buildResultUrl(resultContext) {
+  const params = new URLSearchParams();
+
+  Object.entries(resultContext).forEach(([key, value]) => {
+    if (value) {
+      params.set(key, value);
+    }
+  });
+
+  const query = params.toString();
+  return query ? `/result.html?${query}` : "/result.html";
+}
+
+function setupBackNavigation(resultContext) {
+  const backButton = document.getElementById("detail-back-button");
+  if (!backButton) {
+    return;
+  }
+
+  const hasContext = Object.values(resultContext).some(Boolean);
+  const targetUrl = buildResultUrl(resultContext);
+
+  backButton.onclick = () => {
+    if (hasContext) {
+      window.location.href = targetUrl;
+      return;
+    }
+
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+
+    window.location.href = targetUrl;
+  };
+}
+
+function setupSideNavigation(currentType, context, currentPillar, resultContext) {
   const prevBtn = document.getElementById("detail-prev-nav");
   const nextBtn = document.getElementById("detail-next-nav");
   const prevLabel = document.getElementById("detail-prev-label");
@@ -668,7 +726,7 @@ function setupSideNavigation(currentType, context, currentPillar) {
     const prevPillar = normalizedContext[prevType] || currentPillar || "";
     prevLabel.textContent = PILLAR_TYPE_CONFIG[prevType].korean;
     prevBtn.onclick = () => {
-      window.location.href = buildDetailUrl(prevType, prevPillar, normalizedContext);
+      window.location.href = buildDetailUrl(prevType, prevPillar, normalizedContext, resultContext);
     };
     prevBtn.setAttribute("aria-label", `${PILLAR_TYPE_CONFIG[prevType].korean} 보기`);
     prevBtn.classList.remove("hidden");
@@ -681,7 +739,7 @@ function setupSideNavigation(currentType, context, currentPillar) {
     const nextPillar = normalizedContext[nextType] || currentPillar || "";
     nextLabel.textContent = PILLAR_TYPE_CONFIG[nextType].korean;
     nextBtn.onclick = () => {
-      window.location.href = buildDetailUrl(nextType, nextPillar, normalizedContext);
+      window.location.href = buildDetailUrl(nextType, nextPillar, normalizedContext, resultContext);
     };
     nextBtn.setAttribute("aria-label", `${PILLAR_TYPE_CONFIG[nextType].korean} 보기`);
     nextBtn.classList.remove("hidden");
@@ -703,11 +761,16 @@ function renderDetail(entry, typeKey, typeConfig) {
     typeConfig.badgeTitle ?? `${typeConfig.korean} (${typeConfig.english})`
   );
   setText("detail-pillar-type-sub", typeConfig.badgeSubtitle ?? "");
-  setText("detail-card-section-title", typeConfig.cardTitle);
+  if (document.getElementById("detail-card-section-title-text")) {
+    setText("detail-card-section-title-text", typeConfig.cardTitle);
+  } else {
+    setText("detail-card-section-title", typeConfig.cardTitle);
+  }
   setText("detail-day-label", label);
   setText("detail-main-caption", entry.summary);
   setText("detail-card-highlight", entry.summary);
   setText("detail-intro-text", entry.intro);
+  setText("detail-advice-heading", typeConfig.adviceHeading ?? "오래도록 빛나기 위하여");
 
   if (entry.emoji) {
     document.title = `${entry.emoji} ${label} 분석`;
@@ -723,39 +786,44 @@ function renderDetail(entry, typeKey, typeConfig) {
   renderAdvice(entry.sections.get(4));
 }
 
+function revealMainContent() {
+  const mainEl = document.getElementById("detail-main");
+  if (!mainEl) {
+    return;
+  }
+  mainEl.classList.remove("opacity-0");
+}
+
 function init() {
-  const typeKey = parseQueryType();
-  const typeConfig = PILLAR_TYPE_CONFIG[typeKey] ?? PILLAR_TYPE_CONFIG[DEFAULT_TYPE];
-  const pillarContext = parsePillarContext();
-  const requestedPillar = parseQueryPillar();
-  const book = PILLAR_BOOKS[typeKey] ?? new Map();
+  try {
+    const typeKey = parseQueryType();
+    const typeConfig = PILLAR_TYPE_CONFIG[typeKey] ?? PILLAR_TYPE_CONFIG[DEFAULT_TYPE];
+    const pillarContext = parsePillarContext();
+    const resultContext = parseResultQueryContext();
+    const requestedPillar = parseQueryPillar();
+    const resolvedPillar = requestedPillar || pillarContext[typeKey] || "";
+    const book = PILLAR_BOOKS[typeKey] ?? new Map();
 
-  let selectedEntry = requestedPillar ? book.get(requestedPillar) : undefined;
+    let selectedEntry = resolvedPillar ? book.get(resolvedPillar) : undefined;
 
-  if (!selectedEntry && typeKey === "day" && !requestedPillar) {
-    selectedEntry = book.get(DEFAULT_PILLAR);
+    if (!selectedEntry) {
+      selectedEntry = createFallbackEntry(typeKey, typeConfig, resolvedPillar);
+    }
+
+    const normalized = normalizeEntry(selectedEntry, typeKey, typeConfig);
+    const finalEntry = {
+      ...normalized,
+      pillarHangul:
+        normalized.pillarHangul ||
+        resolvedPillar
+    };
+
+    renderDetail(finalEntry, typeKey, typeConfig);
+    setupBackNavigation(resultContext);
+    setupSideNavigation(typeKey, pillarContext, finalEntry.pillarHangul, resultContext);
+  } finally {
+    revealMainContent();
   }
-
-  if (!selectedEntry && !requestedPillar) {
-    selectedEntry = book.values().next().value;
-  }
-
-  if (!selectedEntry) {
-    selectedEntry = createFallbackEntry(typeKey, typeConfig, requestedPillar);
-  }
-
-  const normalized = normalizeEntry(selectedEntry, typeKey, typeConfig);
-  const finalEntry = {
-    ...normalized,
-    pillarHangul:
-      normalized.pillarHangul ||
-      requestedPillar ||
-      pillarContext[typeKey] ||
-      (typeKey === "day" ? DEFAULT_PILLAR : "")
-  };
-
-  renderDetail(finalEntry, typeKey, typeConfig);
-  setupSideNavigation(typeKey, pillarContext, finalEntry.pillarHangul);
 }
 
 init();

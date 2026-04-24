@@ -96,7 +96,7 @@
 
     <header class="fixed top-0 w-full z-50 bg-[#fffcf7]/80 backdrop-blur-md border-b border-[#babab0]/20 transition-colors duration-300">
         <div class="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto w-full">
-            <button onclick="window.location.href='/result.html'" class="text-[#5f5e5e] hover:bg-[#eae9de]/50 active:scale-95 transition-transform duration-150 ease-in-out p-2 rounded-full flex items-center justify-center">
+            <button id="detail-back-button" type="button" class="text-[#5f5e5e] hover:bg-[#eae9de]/50 active:scale-95 transition-transform duration-150 ease-in-out p-2 rounded-full flex items-center justify-center">
                 <span class="material-symbols-outlined font-light">arrow_back</span>
             </button>
             <div class="display-text font-semibold tracking-widest text-[#373831] text-lg uppercase">
@@ -122,39 +122,33 @@
         <span class="material-symbols-outlined text-[20px]">chevron_right</span>
     </button>
 
-    <main class="w-full max-w-4xl mx-auto px-6 pt-28 md:pt-28 pb-16 flex flex-col gap-8 md:gap-10 relative z-10">
+    <main id="detail-main" class="w-full max-w-4xl mx-auto px-6 pt-28 md:pt-28 pb-16 flex flex-col gap-8 md:gap-10 relative z-10 opacity-0 transition-opacity duration-200">
         
         <section class="flex flex-col items-center text-center gap-5 md:gap-6">
             <div class="bg-surface-container-highest/50 text-secondary px-4 md:px-5 py-2.5 md:py-3 rounded-2xl text-sm flex items-start gap-2 border border-secondary/10 shadow-sm max-w-3xl">
                 <span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
-                <span id="detail-pillar-type-badge" class="font-semibold tracking-wide md:tracking-widest text-left">일주 (DAY PILLAR): 자아와 본질</span>
+                <span id="detail-pillar-type-badge" class="font-semibold tracking-wide md:tracking-widest text-left"></span>
             </div>
-            <p id="detail-pillar-type-sub" class="font-body text-[12px] md:text-sm font-normal text-on-surface-variant -mt-4">나라는 사람의 성격과 삶을 대하는 핵심 태도</p>
+            <p id="detail-pillar-type-sub" class="font-body text-[12px] md:text-sm font-normal text-on-surface-variant -mt-4"></p>
             
             <h1 class="display-text text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.3] tracking-tight text-on-background">
-                <span id="detail-day-label">일주 을사(乙巳)</span> <br/>
-                <span id="detail-main-caption" class="text-xl md:text-2xl font-normal text-primary/90 mt-4 block">눈부신 태양 아래 피어난 화려한 꽃</span>
+                <span id="detail-day-label"></span> <br/>
+                <span id="detail-main-caption" class="text-xl md:text-2xl font-normal text-primary/90 mt-4 block"></span>
             </h1>
 
-            <div id="detail-top-hashtags" class="flex flex-wrap gap-2.5 mt-1 md:mt-2 justify-center">
-                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#재기발랄</span>
-                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#뛰어난표현력</span>
-                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#매력과센스</span>
-                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#유연한처세</span>
-                <span class="bg-surface-container-lowest text-primary px-4 py-1.5 rounded-full text-sm font-body font-light tracking-wide border border-outline-variant/20 shadow-sm hover:border-secondary/30 hover:text-secondary transition-colors cursor-pointer">#창의적기획</span>
-            </div>
+            <div id="detail-top-hashtags" class="flex flex-wrap gap-2.5 mt-1 md:mt-2 justify-center"></div>
         </section>
 
         <section class="w-full mt-0">
             <div class="bg-surface-container-low/50 rounded-[2rem] p-8 pt-14 md:p-12 md:pt-16 border border-outline-variant/20 shadow-sm flex flex-col md:flex-row items-center gap-10 md:gap-16 relative overflow-hidden">
                 <h2 id="detail-card-section-title" class="display-text absolute top-5 right-6 md:right-8 inline-flex items-center gap-1.5 rounded-full border border-secondary/20 bg-secondary-container/70 px-3.5 py-1.5 text-[11px] md:text-xs font-semibold text-on-secondary-container tracking-[0.12em] shadow-[0_6px_16px_rgba(194,34,37,0.12)] backdrop-blur-sm">
                     <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">id_card</span>
-                    <span>나의 일주 카드</span>
+                    <span id="detail-card-section-title-text"></span>
                 </h2>
                  
                 <div class="w-48 md:w-60 shrink-0 cursor-pointer group relative z-10" onclick="openCardModal()">
                     <div class="w-full aspect-[1/2] rounded-2xl overflow-hidden shadow-md border border-outline-variant/30 relative bg-surface-container-lowest">
-                        <img id="detail-card-image" alt="을사일주 카드" src="/images/을사.png" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img id="detail-card-image" alt="" style="display:none;" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                         
                         <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                             <span class="material-symbols-outlined text-white text-4xl font-light">zoom_in</span>
@@ -258,7 +252,7 @@
         <section class="mt-8 mb-12 py-12 relative w-full flex flex-col items-center">
             <div class="w-[1px] h-16 bg-gradient-to-b from-transparent to-secondary/40 mb-10"></div>
             
-            <h2 class="display-text text-lg md:text-xl font-medium text-secondary tracking-[0.2em] mb-10">
+            <h2 id="detail-advice-heading" class="display-text text-lg md:text-xl font-medium text-secondary tracking-[0.2em] mb-10">
                 오래도록 빛나기 위하여
             </h2>
             
@@ -297,7 +291,7 @@
         </button>
         <div class="relative max-w-[90vw] max-h-[90vh]" onclick="event.stopPropagation()">
             <video id="detail-modal-video" class="hidden max-w-full max-h-[85vh] object-contain rounded-2xl shadow-[0_20px_60px_rgb(0,0,0,0.5)]" muted loop playsinline preload="metadata"></video>
-            <img id="detail-modal-image" src="/images/을사.png" alt="을사일주 카드 확대" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-[0_20px_60px_rgb(0,0,0,0.5)]" />
+            <img id="detail-modal-image" alt="" style="display:none;" class="max-w-full max-h-[85vh] object-contain rounded-2xl shadow-[0_20px_60px_rgb(0,0,0,0.5)]" />
         </div>
     </div>
 
